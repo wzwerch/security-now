@@ -1,0 +1,19 @@
+# Obsidian: per-device UI state and caches
+.obsidian/workspace
+.obsidian/workspace.json
+.obsidian/workspaces.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.trash/
+
+# Claudian chat sessions and local settings (device-specific)
+.claudian/sessions/
+.claudian/claudian-settings.json
+
+# Claude Code local settings (device-specific)
+.claude/settings.local.json
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
