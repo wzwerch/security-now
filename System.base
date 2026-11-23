@@ -1,0 +1,158 @@
+formulas:
+  image: image(file.file)
+  first-image: image(file.embeds[0])
+  Second_Image: image(file.embeds[1])
+  third_Image: image(file.embeds[2])
+  Unresolved Links: |-
+    file.content.match(/\[\[([^\]|#]+)(?:\|[^\]]*)?\]\]/)
+      .map(l => l[1])
+      .filter(n => !app.vault.getAbstractFileByPath(n + ".md"))
+properties:
+  formula.image:
+    displayName: Image
+  formula.Second_Image:
+    displayName: second_Image
+views:
+  - type: table
+    name: All Notes
+    order:
+      - file.name
+      - file.ctime
+      - file.mtime
+    sort:
+      - property: file.mtime
+        direction: DESC
+      - property: formula.image
+        direction: ASC
+  - type: table
+    name: 🆕 Recently Created
+    order:
+      - file.name
+      - file.ctime
+      - summary
+      - file.tags
+    sort:
+      - property: file.ctime
+        direction: DESC
+    columnSize:
+      file.name: 412
+      note.summary: 179
+  - type: table
+    name: ⏱️ Modified Last
+    order:
+      - file.name
+      - file.mtime
+      - summary
+      - file.tags
+    sort:
+      - property: file.mtime
+        direction: DESC
+    columnSize:
+      file.name: 233
+      note.summary: 179
+    rowHeight: medium
+  - type: table
+    name: 📎 Attachments
+    filters:
+      and:
+        - file.path.contains("Attachment")
+    order:
+      - file.name
+      - formula.image
+      - file.size
+      - file.ctime
+      - file.path
+    sort:
+      - property: formula.movies
+        direction: DESC
+      - property: file.size
+        direction: DESC
+    columnSize:
+      file.name: 268
+      formula.image: 439
+      file.path: 242
+    rowHeight: extra
+    image: formula.image
+  - type: table
+    name: ❓ Untitled Files
+    filters:
+      and:
+        - file.name.containsAny("untitled")
+    order:
+      - file.name
+      - file.ctime
+      - summary
+      - file.tags
+    sort:
+      - property: file.name
+        direction: DESC
+      - property: file.mtime
+        direction: DESC
+    columnSize:
+      file.name: 412
+      note.summary: 179
+  - type: table
+    name: 🔧 Templates
+    filters:
+      and:
+        - file.folder == "_templates"
+    order:
+      - file.name
+      - file.ctime
+      - file.tags
+      - type
+      - file.path
+    sort:
+      - property: file.mtime
+        direction: DESC
+    columnSize:
+      file.name: 412
+      file.tags: 238
+      note.type: 163
+      file.path: 242
+  - type: table
+    name: 🏷️ Files without Tags
+    filters:
+      and:
+        - file.tags.isEmpty()
+        - '!file.path.containsAny("templates")'
+        - '!file.path.containsAny("bases")'
+        - '!file.path.containsAny("attachments")'
+    order:
+      - file.name
+      - summary
+      - tags
+      - file.ctime
+      - file.mtime
+    sort:
+      - property: file.tags
+        direction: ASC
+      - property: file.ctime
+        direction: DESC
+    columnSize:
+      file.name: 412
+      note.summary: 254
+      note.tags: 190
+    rowHeight: medium
+  - type: table
+    name: 🧹 Large Files
+    filters:
+      and:
+        - file.size > 500000
+        - '!file.path.contains("templates")'
+    order:
+      - file.name
+      - formula.image
+      - file.size
+      - file.ext
+      - file.ctime
+      - file.mtime
+    sort:
+      - property: file.size
+        direction: DESC
+      - property: file.ctime
+        direction: DESC
+    columnSize:
+      file.name: 325
+      formula.image: 185
+    rowHeight: tall
